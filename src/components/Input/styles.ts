@@ -1,13 +1,11 @@
-import styled, {css} from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface ContainerProps {
   isFocused: boolean;
   isErrored: boolean;
 }
 
-// eslint-disable-next-line no-undef
 export const Container = styled.View<ContainerProps>`
   width: 100%;
   height: 60px;
@@ -17,8 +15,10 @@ export const Container = styled.View<ContainerProps>`
   margin-bottom: 8px;
   border-width: 2px;
   border-color: #232129;
+
   flex-direction: row;
   align-items: center;
+
   ${(props) =>
     props.isErrored &&
     css`

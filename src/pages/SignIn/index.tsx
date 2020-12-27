@@ -1,25 +1,28 @@
-/* eslint-disable react-native/no-inline-styles */
-import React, {useCallback, useRef} from 'react';
+import React, { useCallback, useRef } from 'react';
 import {
   Image,
   View,
+  ScrollView,
   KeyboardAvoidingView,
   Platform,
-  ScrollView,
   TextInput,
   Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import {useNavigation} from '@react-navigation/native';
-import {Form} from '@unform/mobile';
-import {FormHandles} from '@unform/core';
-import {useAuth} from '../../hooks/auth';
+import { useNavigation } from '@react-navigation/native';
 import * as Yup from 'yup';
 
-import getValidationErros from '../../utils/getValidationErros';
+import { Form } from '@unform/mobile';
+import { FormHandles } from '@unform/core';
+
+import { useAuth } from '../../hooks/auth';
+
+import getValidationErrors from '../../utils/getValidationErrors';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
+
+import logoImg from '../../assets/logo.png';
 
 import {
   Container,
@@ -35,15 +38,13 @@ interface SignInFormData {
   password: string;
 }
 
-import logoImg from '../../assets/logo.png';
-
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const passwordInputRef = useRef<TextInput>(null);
-  const navigation = useNavigation();
-  const {signIn, user} = useAuth();
 
-  console.log(user);
+  const navigation = useNavigation();
+
+  const { signIn } = useAuth();
 
   const handleSignIn = useCallback(
     async (data: SignInFormData) => {
@@ -67,7 +68,7 @@ const SignIn: React.FC = () => {
         });
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
-          const errors = getValidationErros(err);
+          const errors = getValidationErrors(err);
 
           console.log(errors);
 
@@ -77,8 +78,8 @@ const SignIn: React.FC = () => {
         }
 
         Alert.alert(
-          'Erro na atuenticação',
-          'Ocorreu um erro ao fazer login, cheque as credenciais',
+          'Erro na autenticação',
+          'Ocorreu um erro ao fazer login, cheque as credenciais.',
         );
       }
     },
@@ -88,12 +89,14 @@ const SignIn: React.FC = () => {
   return (
     <>
       <KeyboardAvoidingView
-        style={{flex: 1}}
+        style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        enabled>
+        enabled
+      >
         <ScrollView
           keyboardShouldPersistTaps="handled"
-          contentContainerStyle={{flex: 1}}>
+          contentContainerStyle={{ flex: 1 }}
+        >
           <Container>
             <Image source={logoImg} />
 
@@ -130,7 +133,8 @@ const SignIn: React.FC = () => {
               <Button
                 onPress={() => {
                   formRef.current?.submitForm();
-                }}>
+                }}
+              >
                 Entrar
               </Button>
             </Form>
@@ -141,6 +145,7 @@ const SignIn: React.FC = () => {
           </Container>
         </ScrollView>
       </KeyboardAvoidingView>
+
       <CreateAccountButton onPress={() => navigation.navigate('SignUp')}>
         <Icon name="log-in" size={20} color="#ff9000" />
         <CreateAccountButtonText>Criar uma conta</CreateAccountButtonText>
